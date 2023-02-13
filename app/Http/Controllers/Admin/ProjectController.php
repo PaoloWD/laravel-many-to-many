@@ -120,6 +120,7 @@ class ProjectController extends Controller
         if($project->cover_img){
             Storage::delete($project->cover_img);
         }
+        $project->tecnologies()->detach();
         $project->delete();
         return redirect()->route("admin.dashboard");
     }
