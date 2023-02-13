@@ -8,6 +8,7 @@ use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
 use Illuminate\Support\Facades\Validator;
 use App\Http\Controllers\Controller;
+use App\Models\Tecnology;
 use App\Models\Type;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
@@ -34,7 +35,8 @@ class ProjectController extends Controller
     public function create()
     {
         $types = Type::all();
-        return view('admin.projects.create', compact('types'));
+        $tecnologies = Tecnology::all();
+        return view('admin.projects.create', compact('types', "tecnologies"));
     }
 
     /**
@@ -47,12 +49,14 @@ class ProjectController extends Controller
     {
         $data = $request->validated();
         $project = Project::create($data);
-        
     
         if (key_exists('cover_img', $data)){
             $path = Storage::put('projects', $data['cover_img']);
             $project->cover_img = $path;
         } 
+        if ($request->has("tecnologies")) {
+            $project->tecnologies()->attach($data["tecnologies"]);
+        }
         $project->save();
         return redirect()->route("admin.projects.show", $project->id);
     }
@@ -78,7 +82,8 @@ class ProjectController extends Controller
     public function edit(Project $project)
     {
         $types = Type::all();
-        return view('admin.projects.edit', compact('project', 'types'));
+        $tecnologies = Tecnology::all();
+        return view('admin.projects.edit', compact('project', 'types', 'tecnologies'));
     }
 
     /**
@@ -98,7 +103,7 @@ class ProjectController extends Controller
             Storage::delete($project->cover_img);
             $project->cover_img = $path;
         }
-
+        $project->tecnologies()->sync($data["tecnologies"]);
         $project->save();
 
         return redirect()->route("admin.projects.show", $project->id);

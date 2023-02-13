@@ -42,7 +42,23 @@
         </div>
       @enderror
     </div>
+    <div class="mb-3">
+      @foreach ($tecnologies as $tecnology)
+        <div class="form-check form-check-inline @error('tecnologies') is-invalid @enderror">
+          <input class="form-check-input @error('tecnologies') is-invalid @enderror" type="checkbox"
+            id="tecnologyCheckbox_{{ $loop->index }}" value="{{ $tecnology->id }}" name="tecnologies[]"
+            {{ in_array( $tecnology->id, old('tecnologies', [])) ? 'checked' : '' }}
+            >
+          <label class="form-check-label" for="tecnologyCheckbox_{{ $loop->index }}">{{ $tecnology->name }}</label>
+        </div>
+      @endforeach
 
+      @error('tecnologies')
+        <div class="invalid-feedback">
+          {{ $message }}
+        </div>
+      @enderror
+    </div>
     <div class="input-group">
       <input name="cover_img" type="file" class="form-control" id="inputGroupFile04" aria-describedby="inputGroupFileAddon04" aria-label="Upload">
       <button class="btn btn-outline-secondary" type="button" id="inputGroupFileAddon04">Button</button>

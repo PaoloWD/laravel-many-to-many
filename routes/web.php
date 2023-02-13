@@ -36,6 +36,7 @@ Route::middleware(['auth', 'verified'])
 ->group(function(){
     Route::get('/dashboard', [DashboardController::class, 'home'])->name('dashboard');
     Route::resource('projects', ProjectController::class);
+    Route::resource('tecnologies', TecnologyController::class);
 });
 
 Route::resource('public', PublicController::class);
