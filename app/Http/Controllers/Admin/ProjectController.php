@@ -39,6 +39,13 @@ class ProjectController extends Controller
         return view('admin.projects.create', compact('types', "tecnologies"));
     }
 
+    public function search(Request $request)
+    {
+        $query = $request->get('name');
+        $projects = Project::where('name', 'like', '%'.$query.'%')->get();
+        return view('admin.projects.show', compact('projects'));
+    }
+
     /**
      * Store a newly created resource in storage.
      *

@@ -26,6 +26,10 @@
                             <th scope="col">Tipo di progetto</th>
                             <th scope="col">Manage</th>
                           </tr>
+                          <form action="{{ route('projects.search') }}" method="GET">
+                            <input type="text" name="name" placeholder="Cerca titolo del progetto">
+                            <button type="submit" class="btn btn-primary">Cerca</button>
+                        </form>
                         </thead>
                         @foreach ($projects as $project)
                         <tbody class="table-group-divider">
